@@ -11,11 +11,11 @@ import { auth } from 'firebase/app';
 export class AppComponent {
   constructor(public afAuth: AngularFireAuth) {
   }
-  login_with_google () {
+  login_with_google() {
     this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
   }
-  login_with_email () {
-    this.afAuth.auth.signInAndRetrieveDataWithEmailAndPassword("test@gmail.com", "password");
+  login_with_email(email, password) {
+    this.afAuth.auth.signInAndRetrieveDataWithEmailAndPassword(email, password);
   }
   logout() {
     this.afAuth.auth.signOut();

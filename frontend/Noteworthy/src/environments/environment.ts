@@ -4,13 +4,13 @@
 
 export const environment = {
   production: false,
-  firebase : {
-    apiKey: "AIzaSyAQZjBdzmjg6Je2eqSq52UVhXYd9b-HK1A",
-    authDomain: "noteworthy-a3b68.firebaseapp.com",
-    databaseURL: "https://noteworthy-a3b68.firebaseio.com",
-    projectId: "noteworthy-a3b68",
-    storageBucket: "noteworthy-a3b68.appspot.com",
-    messagingSenderId: "391847953093"
+  firebase: {
+    apiKey: "AIzaSyDiiEXMCzBqUiOMGKhXxG_fk52DTEewvWM",
+    authDomain: "noteworthy-221403.firebaseapp.com",
+    databaseURL: "https://noteworthy-221403.firebaseio.com",
+    projectId: "noteworthy-221403",     
+    storageBucket: "noteworthy-221403.appspot.com",
+    messagingSenderId: "419730415292"
   }
 };
 

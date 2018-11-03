@@ -1,12 +1,15 @@
-<!DOCTYPE = html>
-<html>
-<head>
-</head>
-<body>
-    <h1>Welcome to Noteworthy!</h1>
-    <div id = "homePic">
-      <img src="../miscItems/book.jpeg" alt="picForHomePage">
+<div *ngIf="afAuth.user | async as user; else showLogin">
+  <header>
+    <h1>Hello {{ user.displayName }}!</h1>
+    <button (click)="logout()">Logout</button>
+  </header>
+  <app-courses></app-courses>
+  </div>
+  <ng-template #showLogin>
+    <div class = "homepage">
+      <h1>Welcome to Noteworthy!</h1>
+      <img src = "../assets/miscItems/book.png" alt="picture">
+      <p>Please login.</p>
+      <button (click)="login()">Login with Google</button>
     </div>
-    <button (click)="login()">Login with Google</button>
-</body>            
-</html>
+  </ng-template>

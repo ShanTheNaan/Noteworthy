@@ -1,0 +1,31 @@
+{
+  "name": "noteworthy",
+  "version": "1.0.0",
+  "description": "Noteworthy backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node index.js --insecure"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShanTheNaan/Noteworthy.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ShanTheNaan/Noteworthy/issues"
+  },
+  "homepage": "https://github.com/ShanTheNaan/Noteworthy#readme",
+  "dependencies": {
+    "argparse": "^1.0.10",
+    "express": "^4.16.4",
+    "express-force-ssl": "^0.3.2",
+    "express-subdomain": "^1.0.5",
+    "fs": "0.0.1-security",
+    "helmet": "^3.14.0",
+    "http": "0.0.0",
+    "https": "^1.0.0",
+    "node-fetch": "^2.2.0"
+  }
+}

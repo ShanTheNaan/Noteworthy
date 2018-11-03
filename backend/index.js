@@ -12,9 +12,15 @@ var args = parser.parseArgs()
 let insecure = args.insecure
 
 const firebase = require("firebase")
-require("firebase/firestore")
+require("firebase/auth");
+require("firebase/database");
+require("firebase/firestore");
+require("firebase/messaging");
+require("firebase/functions");
 require("firebase/storage")
 const firebaseConfig = require("./firebase-auth")
+var admin = require('firebase-admin');
+admin.initializeApp(firebaseConfig);
 firebase.initializeApp(firebaseConfig)
 var db = firebase.firestore()
 db.settings({ timestampsInSnapshots: true});
@@ -36,6 +42,7 @@ http.createServer(app).listen(80);
 var proxy  = httpProxy.createProxyServer();
 
 if(!insecure){
+    app.use(require('express-force-ssl'))
     var options = {
         key: fs.readFileSync('privkey.pem'),
         cert: fs.readFileSync('fullchain.pem')
@@ -43,16 +50,9 @@ if(!insecure){
     https.createServer(options, app).listen(443);
 }
 
-function addUser(id, name, email){
-    db.collection("users").doc(id).set({
-        name: name,
-        email: email
-    })
-}
-
-function addNote(className, date, file){
+function addNote(className, date, author, file){
     let id = uniqid()
-    db.collection("notes").doc(id).set({
+    return db.collection("notes").doc(id).set({
         className: className,
         date: date
     }).then(response =>{
@@ -60,17 +60,51 @@ function addNote(className, date, file){
     })
 }
 
-app.all('*', (req, res, next) => {
-    console.log(req.subdomains)
-    if (req.subdomains.length == 0) {
-        proxy.web(req, res, {target: 'http://localhost:8080'});
-    } else {
-        return next();
+function authorized(id){
+    admin.auth().verifyIdToken(idToken)
+        .then(function(decodedToken) {
+            var uid = decodedToken.uid;
+            return uid
+        }).catch(function(error) {
+            return undefined
+        });
+}
+
+app.get('/api', (req, res) => {
+    res.sendStatus(200)
+});
+app.get('/api/*', (req, res) => {
+    if(("auth" in req.query) && authorized(req.query.auth) != undefined){
+        return next()
+    }else{
+        res.sendStatus(401)
     }
 });
+app.get('/api/newClass', (req, res) => {
+    let name = req.query.name;
+    let creator = req.query.creator;
 
-var api = express.Router();
-api.all('*', (req, res) => {
-    req.setEncoding("<p>hello</p>")
+    // call new class
 });
-app.use(subdomain('api', api));
+app.get('/api/classes', (req, res) => {
+    // Return class list
+});
+app.get('/api/notes', (req, res) => {
+    let className = req.query.className;
+    let date = req.query.date;
+
+    // Return notes list
+});
+app.post('/api/upload', (req, res) => {
+    let className = req.query.name;
+    let date = req.query.date;
+    let author = req.query.author;
+    let file = req.body;
+
+    addNote(className, date, author, file).then(response =>{
+        res.sendStatus(201)
+    })
+});
+app.all('*', (req, res, next) => {
+    proxy.web(req, res, {target: 'http://localhost:8080'});
+});

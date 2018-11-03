@@ -1,0 +1,70 @@
+.homepage {
+    text-align: center;
+}
+
+.homepage img {
+    width: 400px;
+}
+
+.homepage button {
+    padding: 10px;
+}
+
+.homepage .divider{
+    width:5px;
+    height:auto;
+    display:inline-block;
+}
+
+div {
+    display: block;
+    margin-bottom: 0;
+}
+
+.Logo {
+   display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}
+
+.circle {
+   display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 3%;
+}
+
+.google_prompt {
+   color: #ef6c00;
+   font-family: 'Slabo 27px', serif;
+   font-size: 19px;
+   text-align: center;
+}
+
+col {
+   color: #e57373;
+}
+
+label {
+  color: #e57373;
+}
+
+/* label focus color */
+input[type=text]:focus + label {
+  color: #ffa726;
+}
+
+/* label underline focus color */
+input[type=text]:focus {
+     border-bottom: 1px solid #ffa726;
+     box-shadow: 0 1px 0 0 #ffa726;
+}
+
+button {
+   margin-top: 1%;
+}
+
+.section {
+   margin-top: 1%;
+}

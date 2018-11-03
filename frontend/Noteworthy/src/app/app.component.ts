@@ -9,11 +9,34 @@ import { auth } from 'firebase/app';
 })
 
 export class AppComponent {
-  title = 'Noteworthy';
   constructor(public afAuth: AngularFireAuth) {
   }
-
-  login() {
+  login_with_google () {
     this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
+  }
+  login_with_email () {
+    this.afAuth.auth.signInAndRetrieveDataWithEmailAndPassword("test@gmail.com", "password");
+  }
+  logout() {
+    this.afAuth.auth.signOut();
+  }
+
+  add_email (email, password) {
+    this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+    .catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      if (errorCode == 'auth/weak-password') {
+        alert('The password is too weak.');
+      } else {
+        alert(errorMessage);
+      }
+      console.log(error);
+    });
+  }
+
+  update_user_info (displayName) {
+    this.afAuth.auth.currentUser.updateProfile(displayName);
   }
 }

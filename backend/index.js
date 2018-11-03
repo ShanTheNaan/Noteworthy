@@ -8,22 +8,32 @@ var parser = new ArgumentParser({
   description: packageInfo.description
 })
 parser.addArgument([ '-i', '--insecure' ],{help: 'Start server without https', action: 'storeTrue'})
-parser.addArgument([ '-t', '--token' ],{help: 'GCP OAUTH Token', required: true})
 var args = parser.parseArgs()
 let insecure = args.insecure
-let token = args.token
+
+const firebase = require("firebase")
+require("firebase/firestore")
+require("firebase/storage")
+const firebaseConfig = require("./firebase-auth")
+firebase.initializeApp(firebaseConfig)
+var db = firebase.firestore()
+db.settings({ timestampsInSnapshots: true});
+var storage = firebase.storage().ref();
 
 const fetch = require('node-fetch');
 const express = require("express");
 const subdomain = require('express-subdomain');
 const http = require('http');
+const httpProxy = require('http-proxy');
 const https = require('https');
 const fs = require('fs');
+var uniqid = require('uniqid');
 
 const app = express();
 app.use(require('helmet')());
 
 http.createServer(app).listen(80);
+var proxy  = httpProxy.createProxyServer();
 
 if(!insecure){
     var options = {
@@ -33,4 +43,34 @@ if(!insecure){
     https.createServer(options, app).listen(443);
 }
 
-// Add routing logic
+function addUser(id, name, email){
+    db.collection("users").doc(id).set({
+        name: name,
+        email: email
+    })
+}
+
+function addNote(className, date, file){
+    let id = uniqid()
+    db.collection("notes").doc(id).set({
+        className: className,
+        date: date
+    }).then(response =>{
+        return storage.child(id).put(file)
+    })
+}
+
+app.all('*', (req, res, next) => {
+    console.log(req.subdomains)
+    if (req.subdomains.length == 0) {
+        proxy.web(req, res, {target: 'http://localhost:8080'});
+    } else {
+        return next();
+    }
+});
+
+var api = express.Router();
+api.all('*', (req, res) => {
+    req.setEncoding("<p>hello</p>")
+});
+app.use(subdomain('api', api));

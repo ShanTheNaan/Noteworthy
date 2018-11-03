@@ -6,18 +6,14 @@ import { auth } from 'firebase/app';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  template : `
-    <p> Hello </p>
-    <button (click)="login()">Login with Google</button>
-
-  `
 })
+
 export class AppComponent {
   title = 'Noteworthy';
   constructor(public afAuth: AngularFireAuth) {
-
   }
-  login () {
+
+  login() {
     this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
   }
 }

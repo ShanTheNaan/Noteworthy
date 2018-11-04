@@ -9,8 +9,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path')
 const uniqid = require('uniqid');
-const binary = require('binary');
-const bodyParser = require('body-parser');
+var getRawBody = require('raw-body')
 
 // Firebase includes
 const firebase = require("firebase-admin")
@@ -30,8 +29,12 @@ var parser = new ArgumentParser({
   description: packageInfo.description
 })
 parser.addArgument([ '-i', '--insecure' ],{help: 'Start server without https', action: 'storeTrue'})
+parser.addArgument([ '-p', '--http-port'],{defaultValue: 80})
+parser.addArgument([ '-s', '--https-port'],{defaultValue: 443})
 var args = parser.parseArgs()
 let insecure = args.insecure
+let httpPort = args.http_port
+let httpsPort = args.https_port
 
 // Setup firebase
 var serviceAccount = require("./noteworthy-221403-firebase-adminsdk-mz9td-c065af2621.json");
@@ -46,9 +49,9 @@ col = db.collection("data")
 
 const app = express();
 app.use(require('helmet')());
-app.use(bodyParser.raw({type: 'application/octet-stream', limit : '2mb'}))
 
 http.createServer(app).listen(80);
+console.log("HTTP Listening on port " + httpPort)
 
 // Check whether or not to enable ssl
 if(!insecure){
@@ -57,23 +60,49 @@ if(!insecure){
         key: fs.readFileSync('privkey.pem'),
         cert: fs.readFileSync('fullchain.pem')
       };
-    https.createServer(options, app).listen(443);
+    https.createServer(options, app).listen(httpsPort);
+    console.log("HTTPS Listening on port " + httpsPort)
 }
+
+app.use(function (req, res, next) {
+    getRawBody(req, {
+      length: req.headers['content-length'],
+      limit: '1mb'
+    }, function (err, buf) {
+        console.log("Called raw body parser")
+      if (err){
+          console.log("Error processing body!")
+      }else{
+          req.body = buf
+      }
+      return next()
+    })
+  })
 
 
 // BEGIN API FUNCTIONS =========================================
 
 
-function authorize(token){
-    return firebase.auth().verifyIdToken(token)
-        .then(function(decodedToken) {
-            var uid = decodedToken.uid;
-            console.log("Valid token: " + token)
-            return uid
-        }).catch(function(error) {
-            console.log("Invalid token: " + token)
-            return undefined
-        });
+function authorize(req, res, next){
+    if(("auth" in req.query)){
+        let token = req.query.auth
+        return firebase.auth().verifyIdToken(token)
+                .then(function(decodedToken) {
+                    var uid = decodedToken.uid;
+                    console.log("Valid token: " + token)
+                    res.locals.uid = uid // Append uid to request
+                    return next()
+                }).catch(function(error) {
+                    console.log("Invalid token: " + token)
+                    // TODO enforce security
+                    console.log("setting uid to " + req.query.auth)
+                    res.locals.uid = req.query.auth
+                    return next()
+                    //res.sendStatus(401)
+                });
+    }else{
+        res.sendStatus(401)
+    }
 }
 
 function getCourses(){
@@ -117,14 +146,14 @@ function addNote(course, date, author, file){
     var fileID = uniqid()
     var fileName = fileID + '.pdf'
     // Upload file first
-    bucket.upload(file, {
+    return bucket.upload(file, {
         destination: fileName,
         gzip: true,
         public: true
     }).then(response => {
         console.log("Uploaded file: "+file)
         // Then create entry in firestore
-        return col.doc().set({
+        let data = {
             isNote: true,
             course: course,
             date: date,
@@ -132,7 +161,9 @@ function addNote(course, date, author, file){
             author: author,
             stars: [author],
             id: fileID
-        })
+        }
+        console.log(data)
+        return col.doc().set(data)
         .then(function() {
             return true;
         })
@@ -216,21 +247,8 @@ function star(id, user){
 app.use(express.static(path.join(__dirname, "../backup")));
 
 app.get('/api/*', (req, res, next) => {
-    if(("auth" in req.query)){
-        authorize(req.query.auth).then(uid => {
-            if (uid != undefined){
-                res.locals.uid = uid // Append uid to request
-                return next()
-            }else{
-                // TODO enforce security
-                res.locals.uid = req.query.auth
-                return next()
-                //res.sendStatus(401)
-            }
-        })
-    }else{
-        res.sendStatus(401)
-    }
+    console.log("Called /api/*")
+    authorize(req, res, next)
 });
 app.post('/api/course', (req, res) => {
     if("name" in req.query){
@@ -277,7 +295,26 @@ app.post('/api/star', (req, res) => {
         res.sendStatus(400)
     }
 });
-
+app.post('/api/upload', (req, res, next) => {
+    // Hack solution because for some reason authorize doesn't get called when this is called
+    authorize(req, res, () => {
+        if("course" in req.query && "date" in req.query){
+            var fileName = uniqid() + ".pdf"
+            fs.writeFileSync(path.join(__dirname, fileName), req.body)
+            console.log("UID: " + res.locals.uid)
+            addNote(req.query.course, req.query.date, res.locals.uid, fileName).then(result => {
+                if(result == true){
+                    res.sendStatus(201)
+                }else{
+                    res.sendStatus(409)
+                }
+                fs.unlink(fileName)
+            })
+        }else{
+            res.sendStatus(400)
+        }
+    })
+});
 app.get('/api/*', (req, res) => {
     // Catch invalid api calls
     res.sendStatus(404)

@@ -84,21 +84,8 @@ app.use(function (req, res, next) {
 
 function authorize(req, res, next){
     if(("auth" in req.query)){
-        let token = req.query.auth
-        return firebase.auth().verifyIdToken(token)
-                .then(function(decodedToken) {
-                    var uid = decodedToken.uid;
-                    console.log("Valid token: " + token)
-                    res.locals.uid = uid // Append uid to request
-                    return next()
-                }).catch(function(error) {
-                    console.log("Invalid token: " + token)
-                    // TODO enforce security
-                    console.log("setting uid to " + req.query.auth)
-                    res.locals.uid = req.query.auth
-                    return next()
-                    //res.sendStatus(401)
-                });
+        res.locals.uid = req.query.auth
+        return next()
     }else{
         res.sendStatus(401)
     }
@@ -277,6 +264,24 @@ app.get('/api/dates', (req, res) => {
 app.get('/api/notes', (req, res) => {
     if("course" in req.query && "date" in req.query){
         getNotes(req.query.course, req.query.date).then(notes => res.send(JSON.stringify(notes)))
+    }else{
+        res.sendStatus(400)
+    }
+});
+app.get('/api/allNotes', (req, res) => {
+    if("course" in req.query){
+        return getDates(req.query.course).then(dates => {
+            let returnNotes = []
+            dates.forEach(date => {
+                console.log(date)
+                getNotes(req.query.course, date).then(notes => {
+                    notes.forEach(note => {
+                        returnNotes.push(note)
+                    })
+                })
+            })
+            res.send(JSON.stringify(returnNotes))
+        })
     }else{
         res.sendStatus(400)
     }

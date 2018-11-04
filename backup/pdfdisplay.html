@@ -1,0 +1,75 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Berkshire+Swash" rel="stylesheet">
+
+<html>
+<head>
+    <title>Noteworthy</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="css/pdfdisplay.css">
+</head>
+
+<body>
+
+   <div class="row" style="margin-bottom: 0;">
+      <div class="row" style="margin-bottom: 0;">
+         <div class="topHeader">
+            <div class="col s12 #e57373 red lighten-2">
+               <div class="col s1 #e57373 red lighten-2">
+                  <img src="images/notepad.png">
+               </div>
+               <div class="col s4 offset-s1 #e57373 red lighten-2" style="padding-bottom: 1%;">
+                  <h1 class="title"> Notes </h1>
+               </div>
+            </div>
+         </div>
+      </div>
+    </div>
+
+    <div class="pdf_viewer">
+      <object data="http://www.orimi.com/pdf-test.pdf" type="application/pdf" width="100%" height="100%">
+        <p>
+           <b>Error</b>: This browser does not support PDFs. Please download the PDF to view it:
+           <a href="http://www.orimi.com/pdf-test.pdf">Download PDF</a>.
+        </p>
+      </object>
+    </div>
+
+    <div class="col s2 offset-s10 #ffe0b2 orange lighten-4"
+         style="position: fixed;
+               width: 22%;
+               height: 15%;
+               bottom: 0;
+               right: 5%;
+               background-color: #ffe0b2;">
+
+       <p class="rating_text">
+         How were the notes? Rate them here!
+       </p>
+
+       <div class="stars">
+         <a class="btn-floating btn-small hoverable waves-effect #fbc02d yellow darken-2">
+            <i class="material-icons">star</i></a>
+         <a class="btn-floating btn-small hoverable waves-effect #fbc02d yellow darken-2">
+            <i class="material-icons">star</i></a>
+         <a class="btn-floating btn-small hoverable waves-effect #fbc02d yellow darken-2">
+            <i class="material-icons">star</i></a>
+         <a class="btn-floating btn-small hoverable waves-effect #fbc02d yellow darken-2">
+            <i class="material-icons">star</i></a>
+         <a class="btn-floating btn-small hoverable waves-effect #fbc02d yellow darken-2">
+            <i class="material-icons">star</i></a>
+
+         <!-- <i class="material-icons">star_border</i>
+         <i class="material-icons">star_border</i>
+         <i class="material-icons">star_border</i>
+         <i class="material-icons">star_border</i>
+         <i class="material-icons">star_border</i> -->
+       </div>
+    </div>
+
+</body>
+</html>

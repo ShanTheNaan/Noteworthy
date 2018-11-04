@@ -69,7 +69,6 @@ app.use(function (req, res, next) {
       length: req.headers['content-length'],
       limit: '1mb'
     }, function (err, buf) {
-        console.log("Called raw body parser")
       if (err){
           console.log("Error processing body!")
       }else{

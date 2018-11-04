@@ -45,6 +45,7 @@ function createClass(name) {
 
 }
 
+
 function nextPage(name) {
     //var course = document.getElementById
     localStorage.setItem('course', name);

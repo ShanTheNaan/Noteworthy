@@ -5,7 +5,7 @@
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
-
+ 
 .title {
     grid-column: 2/7;
     grid-row: 1/2;
@@ -19,7 +19,7 @@
     text-shadow: 1px 1px #000000;
     border-bottom: 6px solid rgb(253, 153, 150);
 }
-
+ 
 .notes {
     grid-column: 2/7;
     grid-row: 2/6;
@@ -31,7 +31,7 @@
     background-color: rgb(238, 113, 110);
     border-bottom: 6px solid rgb(253, 153, 150);
 }
-
+ 
 .side img {
     position: absolute;
     z-index: 5;
@@ -39,7 +39,7 @@
     margin-left: 6%;
     margin-top: 1%;
 }
-
+ 
 .side_bar {
     grid-column: 1/2;
     grid-row: 1/6;
@@ -48,14 +48,14 @@
     border-left: 4px solid rgb(238, 113, 110);
     border-right: 4px solid rgb(238, 113, 110);
 }
-
+ 
 .card {
     margin-top: 0;
     margin-bottom: .5%;
     margin-left: 5%;
     margin-right: 20%;
 }
-
+ 
 .card-title {
     font-family: 'Slabo 27px', serif;
     color: rgb(205, 73, 71);

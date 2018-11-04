@@ -1,3 +1,28 @@
+var data = null;
+
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === 4) {
+    console.log(this.responseText);
+    let json = JSON.parse(this.responseText);
+    console.log(json);
+    for (let i=0; i < json.length; i++) {
+        createClass(json[i]);
+    }
+  }
+});
+
+let id = localStorage.getItem('uid');
+
+xhr.open("GET", "http://localhost:8080/api/courses?auth=123");
+xhr.setRequestHeader("auth", id);
+xhr.setRequestHeader("cache-control", "no-cache");
+xhr.setRequestHeader("postman-token", "e73ba79e-f294-bf44-dac5-b9671bfc07cf");
+
+xhr.send(data);
+
 
 function createClass(name) {
     var div = document.createElement('div');
@@ -11,7 +36,7 @@ function createClass(name) {
     span.classList.add("card-title");
     span.innerHTML = name;
 
-    div.setAttribute("onclick", "nextPage()");
+    div.addEventListener("click", nextPage.bind(null, name));
     div.style.cursor = 'pointer';
 
     div.appendChild(div2);
@@ -20,11 +45,8 @@ function createClass(name) {
 
 }
 
-function nextPage() {
+function nextPage(name) {
+    //var course = document.getElementById
+    localStorage.setItem('course', name);
     window.location = 'notes.html';
-}
-
-var classes = ["CS 2212: Discrete Structures", "CS 2201: Data Structures", "PHYS 1602: Physics 2"];
-for (let i=0; i < classes.length; i++) {
-    createClass(classes[i]);
 }

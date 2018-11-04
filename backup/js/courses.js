@@ -16,7 +16,7 @@ xhr.addEventListener("readystatechange", function () {
 
 let id = localStorage.getItem('uid');
 
-xhr.open("GET", "http://localhost:8080/api/courses?auth=123");
+xhr.open("GET", "/api/courses?auth=123");
 xhr.setRequestHeader("auth", id);
 xhr.setRequestHeader("cache-control", "no-cache");
 xhr.setRequestHeader("postman-token", "e73ba79e-f294-bf44-dac5-b9671bfc07cf");

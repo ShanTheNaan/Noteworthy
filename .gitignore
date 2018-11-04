@@ -1,0 +1,7 @@
+backend/node_modules
+*.pem
+firebase-auth.json
+environment.ts
+noteworthy-221403-firebase-adminsdk-mz9td-c065af2621.json
+noteworthy-42e3f6af7d7f.json
+*.pdf

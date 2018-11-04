@@ -12,8 +12,31 @@
 </head>
 
 <body>
-    
-    
+  <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-auth.js"></script>
+
+
+  <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+  <script>
+      // Initialize Firebase
+      var config = {
+      apiKey: "AIzaSyDiiEXMCzBqUiOMGKhXxG_fk52DTEewvWM",
+      authDomain: "noteworthy-221403.firebaseapp.com",
+      databaseURL: "https://noteworthy-221403.firebaseio.com",
+      projectId: "noteworthy-221403",
+      storageBucket: "noteworthy-221403.appspot.com",
+      messagingSenderId: "419730415292"
+      };
+      firebase.initializeApp(config);
+
+    firebase.auth().signOut();
+
+    firebase.auth().onAuthStateChanged(user => {
+      if(user) {
+        window.location = 'courses.html'; //After successful login, user will be redirected to home.html
+      }
+    });
+  </script>
   <!-- Top Header -->
   <div class="row">
     <div class="col s12 #e57373 red lighten-2">
@@ -32,7 +55,7 @@
             <label for="username">Username</label>
           </div>
           <div class="input-field col s4 offset-s4">
-            <input id="password" type="text" class="validate">
+            <input id="password" type="password" class="validate">
             <label for="password">Password</label>
           </div>
         </div>
@@ -45,7 +68,7 @@
     <div class="row">
       <div class="col s6">
          <div class="right-align">
-           <button class="btn waves-effect waves-light #ef5350 red lighten-1"
+           <button onclick="login_with_email()" id="emailButton" class="btn waves-effect waves-light #ef5350 red lighten-1"
                   type="submit" name="action">
              Sign In
              <i class="material-icons right">send</i>
@@ -54,7 +77,7 @@
       </div>
       <div class="col s6">
          <div class="left-align">
-           <button class="btn waves-effect waves-light #ef5350 red lighten-1"
+           <button onclick="createUser()" id="newUser" class="btn waves-effect waves-light #ef5350 red lighten-1"
                   type="submit" name="action">
              Register
              <i class="material-icons right">send</i>
@@ -76,23 +99,7 @@
  <!-- Google Icon -->
  <input class="circle" id="google" type="image" src="images/google.png" onclick="login_with_google()"/>
 
-    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-auth.js"></script>
 
-
-    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
-    <script>
-        // Initialize Firebase
-        var config = {
-        apiKey: "AIzaSyDiiEXMCzBqUiOMGKhXxG_fk52DTEewvWM",
-        authDomain: "noteworthy-221403.firebaseapp.com",
-        databaseURL: "https://noteworthy-221403.firebaseio.com",
-        projectId: "noteworthy-221403",
-        storageBucket: "noteworthy-221403.appspot.com",
-        messagingSenderId: "419730415292"
-        };
-        firebase.initializeApp(config);
-    </script>
     <script src="js/index.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>

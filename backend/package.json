@@ -20,6 +20,7 @@
   "dependencies": {
     "@google-cloud/storage": "^2.3.0",
     "argparse": "^1.0.10",
+    "binary": "^0.3.0",
     "express": "^4.16.4",
     "express-force-ssl": "^0.3.2",
     "express-subdomain": "^1.0.5",

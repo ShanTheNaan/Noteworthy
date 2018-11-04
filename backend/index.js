@@ -33,6 +33,7 @@ const http = require('http');
 const httpProxy = require('http-proxy');
 const https = require('https');
 const fs = require('fs');
+const path = require('path')
 var uniqid = require('uniqid');
 
 const app = express();
@@ -60,7 +61,7 @@ function addNote(className, date, author, file){
     })
 }
 
-function authorized(id){
+function authorize(id){
     admin.auth().verifyIdToken(idToken)
         .then(function(decodedToken) {
             var uid = decodedToken.uid;
@@ -70,30 +71,38 @@ function authorized(id){
         });
 }
 
-app.get('/api', (req, res) => {
-    res.sendStatus(200)
-});
+app.use(express.static(path.join(__dirname, "../backup")));
+
 app.get('/api/*', (req, res) => {
-    if(("auth" in req.query) && authorized(req.query.auth) != undefined){
-        return next()
+    if(("auth" in req.query)){
+        authorize(req.query.auth).then(uid => {
+            if (uid != undefined){
+                req.uid = uid // Append uid to request
+                return next()
+            }else{
+                res.sendStatus(401)
+            }
+        })
     }else{
         res.sendStatus(401)
     }
 });
-app.get('/api/newClass', (req, res) => {
-    let name = req.query.name;
-    let creator = req.query.creator;
-
-    // call new class
+app.get('/api/newCourse', (req, res) => {
+    if("name" in req.query){
+        // Call newCourse
+    }else{
+        req.sendStatus(400)
+    }
 });
 app.get('/api/classes', (req, res) => {
     // Return class list
 });
 app.get('/api/notes', (req, res) => {
-    let className = req.query.className;
-    let date = req.query.date;
-
-    // Return notes list
+    if("course" in req.query){
+        // Call getNotes
+    }else{
+        req.sendStatus(400)
+    }
 });
 app.post('/api/upload', (req, res) => {
     let className = req.query.name;
@@ -106,5 +115,5 @@ app.post('/api/upload', (req, res) => {
     })
 });
 app.all('*', (req, res, next) => {
-    proxy.web(req, res, {target: 'http://localhost:8080'});
+    res.redirect("index.html")
 });

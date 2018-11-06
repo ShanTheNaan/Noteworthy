@@ -19,23 +19,15 @@
   "homepage": "https://github.com/ShanTheNaan/Noteworthy#readme",
   "dependencies": {
     "@google-cloud/storage": "^2.3.0",
-    "argparse": "^1.0.10",
-    "binary": "^0.3.0",
     "express": "^4.16.4",
-    "express-force-ssl": "^0.3.2",
-    "express-subdomain": "^1.0.5",
     "firebase": "^5.5.7",
     "firebase-admin": "^6.1.0",
     "fs": "0.0.1-security",
     "googleapis": "^34.0.0",
-    "helmet": "^3.14.0",
     "http": "0.0.0",
-    "http-proxy": "^1.17.0",
-    "https": "^1.0.0",
     "multer": "^1.4.1",
     "node-fetch": "^2.2.0",
     "raw-body": "^2.3.3",
-    "uniqid": "^5.0.3",
-    "xmlhttprequest": "^1.8.0"
+    "uniqid": "^5.0.3"
   }
 }

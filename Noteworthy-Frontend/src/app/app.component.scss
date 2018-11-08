@@ -12,6 +12,13 @@
 
 }
 
+.form2 {
+    width: 35vw;
+    display: block;
+    margin: 0 auto;
+    margin-top: 2vh;
+}
+
 .header {
     background-color: rgb(227, 116, 117); 
     display: block;
@@ -20,6 +27,10 @@
 }
 
 .header img {
-    width: 30vw;
+    width: 20vw;
 }
 
+#emailButton {
+    display: block;
+    margin: 1vh auto;
+}

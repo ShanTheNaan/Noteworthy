@@ -1,44 +1,46 @@
+<div class="page">
 <div class="header">
     <img class="header" src="assets/images/Noteworthy_Logo.png" alt="picture">
-  </div>
+</div>
 
-  <div class="card form">
+<div class="card form">
     <div class="card-content">
-      <div class="input-field">
-        <input id="username" type="text" class="validate">
-        <label for="username">Email</label>
-      </div>
-      <div class="input-field">
-        <input id="password" type="password" class="validate">
-        <label for="password">Password</label>
-      </div>
+        <div class="input-field">
+            <input id="username" type="text" class="validate">
+            <label for="username">Email</label>
+        </div>
+        <div class="input-field">
+            <input id="password" type="password" class="validate">
+            <label for="password">Password</label>
+        </div>
 
-      <button id="emailButton" class="btn waves-effect waves-light 
-        #ef5350 red lighten-1" type="submit" name="action">
-            Sign In
+        <button id="emailButton" class="btn waves-effect waves-light 
+        #00c853 green accent-4" type="submit" name="action">
+            Sign in with Email
             <i class="material-icons right">send</i>
-      </button>
+        </button>
     </div>
-  </div>
+</div>
 
-  <div class="card form2"> 
+<div class="card form2"> 
     <div class="card-content"> 
-      <p class="center">
-        New to Noteworthy? 
-        Sign Up!
-        or Login with Google! 
-      </p>
-      <button id="registerButton" class="btn waves-effect waves-light 
-      #ef5350 red lighten-1" type="submit" name="action">
-          Register
-          <i class="material-icons right">send</i>
-      </button>
-      <button id="googleButton" class="btn waves-effect waves-light 
-        #ef5350 red lighten-1" type="submit" name="action">
-            Sign in with Google
-            <i class="material-icons right">send</i>
-      </button>
+        <p class="center">
+            New to Noteworthy? 
+        </p>
+        <div class="flex-buttons">
+            <button id="registerButton" class="btn waves-effect waves-light 
+            #ef5350 red lighten-1" type="submit" name="action">
+                Sign up with Email
+                <i class="material-icons right">email</i>
+            </button>
+            <button id="googleButton" class="btn waves-effect waves-light" type="submit" name="action">
+                    Sign in with Google
+                    <!-- <i class="material-icons right">send</i> -->
+                    <img src="assets/images/google.svg">
+            </button>
+        </div>
     </div>
-  </div>
+</div>
+</div>
 
 <router-outlet></router-outlet>
